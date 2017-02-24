@@ -49,6 +49,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.imageView.setVisibility(View.VISIBLE);
         }
         holder.text_write.setText(item.getWrite());
+        holder.good.setText("좋아요: "+item.getGc()+"개");
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

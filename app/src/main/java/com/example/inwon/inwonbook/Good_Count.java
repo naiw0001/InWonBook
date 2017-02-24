@@ -76,15 +76,13 @@ public class Good_Count{
             }
 
             private ArrayList getjson(String json){
-                String write_idx,gc;
+                String gc;
                 ArrayList list = new ArrayList();
                 try {
                     JSONArray ja = new JSONArray(json);
                     for(int i=0;i<ja.length();i++){
                         JSONObject jo = ja.getJSONObject(i);
-                        write_idx = jo.getString("write_idx");
                         gc = jo.getString("good_count");
-                        list.add(write_idx);
                         list.add(gc);
                     }
                 } catch (Exception e) {

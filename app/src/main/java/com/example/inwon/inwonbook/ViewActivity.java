@@ -207,6 +207,9 @@ public class ViewActivity extends AppCompatActivity {
                 }
             }
             item[i] = new Item(nick_arr.get(i).toString(), img_bitmap, write_arr.get(i).toString());
+            Good_Count gc = new Good_Count(String.valueOf(i));
+            ArrayList gc_arr = gc.getgood_count();
+            item[i].good_count(gc_arr.get(i).toString());
             items.add(item[i]);
         }
 
