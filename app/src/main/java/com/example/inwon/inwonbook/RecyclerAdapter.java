@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,7 +60,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Good_Count good_count = new Good_Count(String.valueOf(position));
-                good_count.getgood_count();
+                ArrayList test = good_count.getgood_count();
+                for(int i=0; i< test.size();i++){
+                    Log.i("ccc",test.get(i).toString());
+                }
+                Toast.makeText(context, "cick,", Toast.LENGTH_SHORT).show();
             }
         });
     }

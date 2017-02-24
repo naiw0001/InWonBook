@@ -13,10 +13,9 @@ import java.net.URLEncoder;
  * 댓글 Insert
  */
 
-public class InsertComment extends AsyncTask<String,Void,Void>{
-
+public class InsertComment extends AsyncTask<String,Void,String>{
     @Override
-    protected Void doInBackground(String... params) {
+    protected String doInBackground(String... params) {
         String link = params[0];
         String comment_idx = params[1];
         String nick = params[2];
@@ -29,12 +28,16 @@ public class InsertComment extends AsyncTask<String,Void,Void>{
             data += "&"+URLEncoder.encode("nick","UTF-8")+"="+URLEncoder.encode(nick,"UTF-8");
             data += "&"+URLEncoder.encode("comment","UTF-8")+"="+URLEncoder.encode(comment,"UTF-8");
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
             OutputStreamWriter ow = new OutputStreamWriter(conn.getOutputStream());
             ow.write(data);
             ow.flush();
             ow.close();
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String re = br.readLine();
+            return re;
         }catch (Exception e){}
 
 

@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -77,24 +78,28 @@ public class ViewActivity extends AppCompatActivity {
         String temp = comment.getText().toString(); // comment
         String link = "http://1.224.44.55/inwonbook_comment_insert.php";
         String nick = CheckLogin.nick;
-        String commnet_idx = idx_arr.get(val).toString();
-        new InsertComment().execute(link,commnet_idx,nick,temp);
-
+        String comment_idx = idx_arr.get(val).toString();
+        Toast.makeText(getApplicationContext(), "send: "+temp+", nick: "+nick+" comment_idx: "+ comment_idx, Toast.LENGTH_SHORT).show();
+        new InsertComment().execute(link,comment_idx,nick,temp);
+        comment.setText("");
+        adapter.notifyDataSetChanged();
     }
     //댓글창 down
     public void slidlayout_down(){
         comment_layout.startAnimation(anim_down);
         comment_layout.setVisibility(View.GONE);
+        comment_list.clear();
     }
-    private static ArrayList comment_list = new ArrayList();
+    private static ArrayList comment_list;
     //댓글창 up
     public static void slidlayout(int position){
-
+        comment_list = new ArrayList();
+        comment_list.clear();
         String pos = String.valueOf(position+1);
         String link = "http://1.224.44.55/inwonbook_comment_select.php";
         comment_layout.startAnimation(anim_up);
         try {
-            comment_list = new Bring_Comment().execute(link,pos).get();
+          comment_list = new Bring_Comment().execute(link,pos).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -115,7 +120,6 @@ public class ViewActivity extends AppCompatActivity {
             nick.add(comment_list.get(i+2).toString());
             comment.add(comment_list.get(i+3).toString());
             if((i+4) == comment_list.size()) break;
-
             i += 4;
         }
         for(int i=0;i<nick.size();i++){

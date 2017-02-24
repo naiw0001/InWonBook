@@ -1,6 +1,7 @@
 package com.example.inwon.inwonbook;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,9 +40,9 @@ public class Bring_Comment extends AsyncTask<String,Void,ArrayList>{
             br.close();
         }catch (Exception e){}
         ArrayList result = comment_b(json.toString());
-
         return result;
     }
+
     private ArrayList comment_b(String json){
         ArrayList list = new ArrayList();
         String idx,write_idx,nick,comment;

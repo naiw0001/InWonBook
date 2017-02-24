@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by inwon on 2017-02-23.
@@ -46,8 +47,8 @@ public class Good_Count{
         new update_gc().execute(idx);
     }
 
-    public void getgood_count(){
-
+    public ArrayList getgood_count(){
+        ArrayList good_list = new ArrayList();
         class getgood extends AsyncTask<String,Void,ArrayList>{
             @Override
             protected ArrayList doInBackground(String... params) {
@@ -90,6 +91,13 @@ public class Good_Count{
                 return list;
             }
         }
-        new getgood().execute(idx);
+        try {
+            good_list = new getgood().execute(idx).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return good_list;
     }
 }
