@@ -103,15 +103,10 @@ public class UploadActivity extends Activity{
             String nick = CheckLogin.nick;
             Insertdbtext insertdbtext = new Insertdbtext();
             insertdbtext.execute("http://1.224.44.55/inwonbook_insert.php", nick, write, uploadFileName);
-
-
     }
-
     @SuppressLint("LongLogTag")
     public int uploadFile(String sourceFileUri) {
-
         String fileName = sourceFileUri;
-
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         String lineEnd = "\r\n";
@@ -121,23 +116,15 @@ public class UploadActivity extends Activity{
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
         File sourceFile = new File(sourceFileUri);
-
         if (!sourceFile.isFile()) {
-
             dialog.dismiss();
-
-            Log.e("uploadFile", "Source File not exist :"
-                    +uploadFilePath + "" + uploadFileName);
-
             runOnUiThread(new Runnable() {
                 public void run() {
                     messageText.setText("Source File not exist :"
                             +uploadFilePath + "" + uploadFileName);
                 }
             });
-
             return 0;
-
         }
         else
         {
@@ -246,7 +233,6 @@ public class UploadActivity extends Activity{
             }
             dialog.dismiss();
             return serverResponseCode;
-
         }
     }
 }

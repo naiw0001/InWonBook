@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 
 public class ListViewAdapter extends BaseAdapter{
-private ArrayList<Listitem> Listitems = new ArrayList<>();
+private ArrayList<Listitem> listitems = new ArrayList<>();
 
     public ListViewAdapter(){
 
@@ -22,12 +22,12 @@ private ArrayList<Listitem> Listitems = new ArrayList<>();
 
     @Override
     public int getCount() {
-        return Listitems.size();
+        return listitems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return Listitems.get(position);
+        return listitems.get(position);
     }
 
     @Override
@@ -40,20 +40,22 @@ private ArrayList<Listitem> Listitems = new ArrayList<>();
         final int pos = position;
         final Context context = parent.getContext();
 
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_item,parent,false);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.listview_item, parent, false);
         }
-        TextView nick = (TextView)convertView.findViewById(R.id.item_nick);
-        TextView comment = (TextView)convertView.findViewById(R.id.item_comment);
-
-        return convertView;
+            Listitem listitem = listitems.get(position);
+            TextView nick = (TextView) convertView.findViewById(R.id.item_nick);
+            TextView comment = (TextView) convertView.findViewById(R.id.item_comment);
+            nick.setText(listitem.getNick());
+            comment.setText(listitem.getComment());
+            return convertView;
     }
     public void addItem(String nick, String comment) {
-        Listitem Listitem = new Listitem();
-        Listitem.setNick(nick);
-        Listitem.setComment(comment);
+        Listitem listitem = new Listitem();
+        listitem.setNick(nick);
+        listitem.setComment(comment);
 
-        Listitems.add(Listitem);
+        listitems.add(listitem);
     }
 }
