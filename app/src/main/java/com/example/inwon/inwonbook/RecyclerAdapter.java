@@ -60,9 +60,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Good_Count good_count = new Good_Count(String.valueOf(position));
-                ArrayList test = good_count.getgood_count();
-                for(int i=0; i< test.size();i++){
-                    Log.i("ccc",test.get(i).toString());
+                int size = good_count.getgood_count().size();
+                if(size == 0){
+                    good_count.insert_goot_count();
+                }else {
+                    good_count.update_good_count();
                 }
                 Toast.makeText(context, "cick,", Toast.LENGTH_SHORT).show();
             }

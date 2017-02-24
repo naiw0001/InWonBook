@@ -9,8 +9,10 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -19,7 +21,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class Good_Count{
-    String idx;
+    private String idx;
 
     public Good_Count(String idx){
         this.idx = idx;
@@ -99,5 +101,31 @@ public class Good_Count{
             e.printStackTrace();
         }
         return good_list;
+    }
+    public void insert_goot_count(){
+        class Insert_gc extends AsyncTask<String,Void,String>{
+
+            @Override
+            protected String doInBackground(String... params) {
+                String link = "http://1.224.44.55/inwonbook_good_insert.php";
+                String data;
+                URL url;
+                try{
+                    url = new URL(link);
+                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                    conn.setDoOutput(true);
+                    data = URLEncoder.encode("write_idx","UTF-8")+"="+URLEncoder.encode(idx,"UTF-8");
+                    OutputStreamWriter ow = new OutputStreamWriter(conn.getOutputStream());
+                    ow.write(data);
+                    ow.flush();
+                    ow.close();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    String line = br.readLine();
+                    return line;
+                }catch (Exception e){}
+                return null;
+            }
+        }
+        new Insert_gc().execute();
     }
 }
