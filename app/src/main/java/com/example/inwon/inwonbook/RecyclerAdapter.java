@@ -37,6 +37,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return new ViewHolder(v);
     }
 
+
     @Override
     public void onBindViewHolder(final RecyclerAdapter.ViewHolder holder, final int position) {
         final Item item = items.get(position);
@@ -49,7 +50,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.imageView.setVisibility(View.VISIBLE);
         }
         holder.text_write.setText(item.getWrite());
-        holder.good.setText("좋아요: "+item.getGc()+"개");
+        int size = new Good_Count(String.valueOf(position)).getgood_count().size();
+        if(size == 0){
+            holder.good.setText("좋아요: 0개");
+        }else {
+            holder.good.setText("좋아요: " + item.getGc() + "개");
+        }
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +72,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     good_count.insert_goot_count();
                 }else {
                     good_count.update_good_count();
+                    String gc = item.getGc();
+                    int igc = Integer.parseInt(gc);
+                    holder.good.setText("좋아요: "+(igc+1)+"개");
                 }
-                Toast.makeText(context, "cick,", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, String.valueOf(position), Toast.LENGTH_SHORT).show();
             }
         });
     }

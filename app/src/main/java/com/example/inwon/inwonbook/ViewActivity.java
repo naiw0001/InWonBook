@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -42,6 +43,7 @@ public class ViewActivity extends AppCompatActivity {
     static int val;
     private static ListView list;
     private static ListViewAdapter adapter;
+    private static int isslide = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,12 +91,14 @@ public class ViewActivity extends AppCompatActivity {
         comment_layout.startAnimation(anim_down);
         comment_layout.setVisibility(View.GONE);
         comment_list.clear();
+        isslide = 0;
     }
     private static ArrayList comment_list;
     //댓글창 up
     public static void slidlayout(int position){
+        isslide = 1;
         comment_list = new ArrayList();
-        comment_list.clear();
+        adapter.clear();
         String pos = String.valueOf(position+1);
         String link = "http://1.224.44.55/inwonbook_comment_select.php";
         comment_layout.startAnimation(anim_up);
@@ -112,14 +116,14 @@ public class ViewActivity extends AppCompatActivity {
 
     private static void viewcomment(){
         ArrayList nick,comment;
-
         nick = new ArrayList();
         comment = new ArrayList();
-
         for(int i=0;i<comment_list.size();){
             nick.add(comment_list.get(i+2).toString());
             comment.add(comment_list.get(i+3).toString());
-            if((i+4) == comment_list.size()) break;
+            if((i+4) == comment_list.size()) {
+                break;
+            }
             i += 4;
         }
         for(int i=0;i<nick.size();i++){
@@ -133,7 +137,9 @@ public class ViewActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(System.currentTimeMillis()>backKeyPressedTime + 2000){
             backKeyPressedTime=System.currentTimeMillis();
+            if(isslide == 1){
             slidlayout_down();
+            }else Toast.makeText(getApplicationContext(), "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
             return;
         }
         if(System.currentTimeMillis()<=backKeyPressedTime+2000){
@@ -191,7 +197,9 @@ public class ViewActivity extends AppCompatActivity {
             }
             i += 4;
         }
-
+        for(int j=0; j<textarray.size();j++){
+            Log.i("ccc",textarray.get(j).toString());
+        }
         Item[] item = new Item[nick_arr.size()];
         for (int i = 0; i < nick_arr.size(); i++) {
             if (img_arr.get(i).toString().equals("no")) {
@@ -209,7 +217,9 @@ public class ViewActivity extends AppCompatActivity {
             item[i] = new Item(nick_arr.get(i).toString(), img_bitmap, write_arr.get(i).toString());
             Good_Count gc = new Good_Count(String.valueOf(i));
             ArrayList gc_arr = gc.getgood_count();
-            item[i].good_count(gc_arr.get(i).toString());
+            if(gc_arr.size() != 0) {
+                item[i].good_count(gc_arr.get(i).toString());
+            }
             items.add(item[i]);
         }
 

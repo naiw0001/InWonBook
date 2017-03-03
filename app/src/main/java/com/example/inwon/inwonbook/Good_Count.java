@@ -2,6 +2,7 @@ package com.example.inwon.inwonbook;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,8 @@ public class Good_Count{
             @Override
             protected ArrayList doInBackground(String... params) {
                 String idx = params[0];
-                String link = "http://1.224.44.55/inwonbook_update_good.php?idx="+idx;
+                String link = "http://1.224.44.55/inwonbook_good_count.php?idx="+idx;
+                Log.i("cccc",link);
                 try {
                     URL url = new URL(link);
                     HttpURLConnection conn = (HttpURLConnection)url.openConnection();

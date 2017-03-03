@@ -24,7 +24,9 @@ private ArrayList<Listitem> listitems = new ArrayList<>();
     public int getCount() {
         return listitems.size();
     }
-
+    public void clear(){
+        listitems.clear();
+    }
     @Override
     public Object getItem(int position) {
         return listitems.get(position);
@@ -51,11 +53,12 @@ private ArrayList<Listitem> listitems = new ArrayList<>();
             comment.setText(listitem.getComment());
             return convertView;
     }
+
     public void addItem(String nick, String comment) {
         Listitem listitem = new Listitem();
         listitem.setNick(nick);
         listitem.setComment(comment);
-
         listitems.add(listitem);
     }
+
 }
