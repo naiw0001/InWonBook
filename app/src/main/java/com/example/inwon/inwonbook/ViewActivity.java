@@ -197,9 +197,6 @@ public class ViewActivity extends AppCompatActivity {
             }
             i += 4;
         }
-        for(int j=0; j<textarray.size();j++){
-            Log.i("ccc",textarray.get(j).toString());
-        }
         Item[] item = new Item[nick_arr.size()];
         for (int i = 0; i < nick_arr.size(); i++) {
             if (img_arr.get(i).toString().equals("no")) {

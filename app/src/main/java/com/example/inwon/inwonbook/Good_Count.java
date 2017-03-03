@@ -35,14 +35,12 @@ public class Good_Count{
             protected ArrayList doInBackground(String... params) {
                 String idx = params[0];
                 String link = "http://1.224.44.55/inwonbook_good_count.php?idx="+idx;
-                Log.i("cccc",link);
                 try {
                     URL url = new URL(link);
                     HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                     conn.setDoInput(true);
                     conn.setDoOutput(true);
                     BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    String re = br.readLine();
                 }catch (Exception e){}
                 return null;
             }

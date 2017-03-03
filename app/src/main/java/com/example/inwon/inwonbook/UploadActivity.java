@@ -71,9 +71,6 @@ public class UploadActivity extends Activity{
         messageText = (TextView) findViewById(R.id.messageText);
 
         messageText.setText("Uploading file path :- '" + uploadFilePath + "|" + uploadFileName + "'");
-        if(!uploadFilePath.equals("no")){
-//            startupload();
-        }
 
         /************* Php script path ****************/
         upLoadServerUri = "http://1.224.44.55/test.php";

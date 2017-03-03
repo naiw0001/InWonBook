@@ -59,7 +59,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, String.valueOf(position), Toast.LENGTH_SHORT).show();
                 ViewActivity.slidlayout(position);
             }
         });
@@ -76,7 +75,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     int igc = Integer.parseInt(gc);
                     holder.good.setText("좋아요: "+(igc+1)+"개");
                 }
-                Toast.makeText(context, String.valueOf(position), Toast.LENGTH_SHORT).show();
             }
         });
     }
