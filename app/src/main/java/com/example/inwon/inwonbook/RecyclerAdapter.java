@@ -59,6 +59,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("adpater_position", String.valueOf(position));
                 ViewActivity.slidlayout(position);
             }
         });

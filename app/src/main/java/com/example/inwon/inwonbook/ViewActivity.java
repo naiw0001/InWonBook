@@ -43,7 +43,7 @@ public class ViewActivity extends AppCompatActivity {
     static int val;
     private static ListView list;
     private static ListViewAdapter adapter;
-    private static int isslide = 0;
+    private static int isslide = 0; // 댓글창 유무
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,10 +96,11 @@ public class ViewActivity extends AppCompatActivity {
     private static ArrayList comment_list;
     //댓글창 up
     public static void slidlayout(int position){
+        Log.i("position",String.valueOf(position));
         isslide = 1;
         comment_list = new ArrayList();
-        adapter.clear();
         String pos = String.valueOf(position+1);
+        val = position+1;
         String link = "http://1.224.44.55/inwonbook_comment_select.php";
         comment_layout.startAnimation(anim_up);
         try {
@@ -111,11 +112,11 @@ public class ViewActivity extends AppCompatActivity {
         }
         viewcomment();
         comment_layout.setVisibility(View.VISIBLE);
-
     }
 
     private static void viewcomment(){
         ArrayList nick,comment;
+        adapter.clear();
         nick = new ArrayList();
         comment = new ArrayList();
         for(int i=0;i<comment_list.size();){
