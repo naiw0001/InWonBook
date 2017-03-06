@@ -84,7 +84,7 @@ public class ViewActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "send: "+temp+", nick: "+nick+" comment_idx: "+ comment_idx, Toast.LENGTH_SHORT).show();
         new InsertComment().execute(link,comment_idx,nick,temp);
         comment.setText("");
-        slidlayout(val);
+        slidlayout(val,0);
         adapter.notifyDataSetChanged();
     }
     //댓글창 down
@@ -96,15 +96,15 @@ public class ViewActivity extends AppCompatActivity {
     }
     private static ArrayList comment_list;
     //댓글창 up
-    public static void slidlayout(int position){
-        Log.i("position",String.valueOf(position));
+    public static void slidlayout(int position,int anim){
         isslide = 1;
         comment_list = new ArrayList();
-//        String pos = String.valueOf(position+1);
         val = position;
         String temp =idx_arr.get(val).toString();
         String link = "http://1.224.44.55/inwonbook_comment_select.php";
-        comment_layout.startAnimation(anim_up);
+        if(anim == 1) {
+            comment_layout.startAnimation(anim_up);
+        }
         try {
           comment_list = new Bring_Comment().execute(link,temp).get();
         } catch (InterruptedException e) {
