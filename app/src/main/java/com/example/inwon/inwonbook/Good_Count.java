@@ -49,13 +49,15 @@ public class Good_Count{
         new update_gc().execute(idx);
     }
 
-    public ArrayList getgood_count(){
-        ArrayList good_list = new ArrayList();
-        class getgood extends AsyncTask<String,Void,ArrayList>{
+    public String getgood_count(){
+        String good_count=null;
+        class getgood extends AsyncTask<String,Void,String>{
             @Override
-            protected ArrayList doInBackground(String... params) {
+            protected String doInBackground(String... params) {
                 String idx = params[0];
                 String link = "http://1.224.44.55/inwonbook_select_good.php?idx="+idx;
+                Log.i("link",link);
+                Log.i("idx",idx);
                 StringBuilder json = new StringBuilder();
                 try {
                     URL url = new URL(link);
@@ -70,35 +72,34 @@ public class Good_Count{
                     br.close();
                 }catch (Exception c){}
 
-                ArrayList result;
+                String result=null;
                 result = getjson(json.toString());
+
                 return result;
             }
 
-            private ArrayList getjson(String json){
-                String gc;
-                ArrayList list = new ArrayList();
+            private String getjson(String json){
+                String gc=null;
                 try {
                     JSONArray ja = new JSONArray(json);
                     for(int i=0;i<ja.length();i++){
                         JSONObject jo = ja.getJSONObject(i);
                         gc = jo.getString("good_count");
-                        list.add(gc);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return list;
+                return gc;
             }
         }
         try {
-            good_list = new getgood().execute(idx).get();
+            good_count = new getgood().execute(idx).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return good_list;
+        return good_count;
     }
     public void insert_goot_count(){
         class Insert_gc extends AsyncTask<String,Void,String>{

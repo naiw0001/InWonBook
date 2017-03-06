@@ -35,7 +35,7 @@ public class ViewActivity extends AppCompatActivity {
     private TextView write;
     private Bitmap img_bitmap;
     private ArrayList<String> textarray;
-    private ArrayList<String> nick_arr, write_arr, img_arr,idx_arr;
+    private static ArrayList<String> nick_arr, write_arr, img_arr,idx_arr;
     static private RelativeLayout comment_layout;
     static Animation anim_up,anim_down;
     private EditText comment;
@@ -84,6 +84,7 @@ public class ViewActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "send: "+temp+", nick: "+nick+" comment_idx: "+ comment_idx, Toast.LENGTH_SHORT).show();
         new InsertComment().execute(link,comment_idx,nick,temp);
         comment.setText("");
+        slidlayout(val);
         adapter.notifyDataSetChanged();
     }
     //댓글창 down
@@ -99,12 +100,13 @@ public class ViewActivity extends AppCompatActivity {
         Log.i("position",String.valueOf(position));
         isslide = 1;
         comment_list = new ArrayList();
-        String pos = String.valueOf(position+1);
-        val = position+1;
+//        String pos = String.valueOf(position+1);
+        val = position;
+        String temp =idx_arr.get(val).toString();
         String link = "http://1.224.44.55/inwonbook_comment_select.php";
         comment_layout.startAnimation(anim_up);
         try {
-          comment_list = new Bring_Comment().execute(link,pos).get();
+          comment_list = new Bring_Comment().execute(link,temp).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -114,7 +116,7 @@ public class ViewActivity extends AppCompatActivity {
         comment_layout.setVisibility(View.VISIBLE);
     }
 
-    private static void viewcomment(){
+    private static void viewcomment(){ // commnet
         ArrayList nick,comment;
         adapter.clear();
         nick = new ArrayList();
@@ -132,14 +134,14 @@ public class ViewActivity extends AppCompatActivity {
         }
         adapter.notifyDataSetChanged();
     }
-
     private long backKeyPressedTime=0;
     @Override
     public void onBackPressed() {
         if(System.currentTimeMillis()>backKeyPressedTime + 2000){
             backKeyPressedTime=System.currentTimeMillis();
             if(isslide == 1){
-            slidlayout_down();
+                slidlayout_down();
+                backKeyPressedTime = 0;
             }else Toast.makeText(getApplicationContext(), "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -189,7 +191,7 @@ public class ViewActivity extends AppCompatActivity {
         List<Item> items = new ArrayList<>();
         for (int i = 0; i < textarray.size(); ) {
             idx_arr.add(textarray.get(i).toString());
-            nick_arr.add(textarray.get(i+1).toString());
+            nick_arr.add(textarray.get(i + 1).toString());
             write_arr.add(textarray.get(i + 2).toString());
             img_arr.add(textarray.get(i + 3).toString());
 
@@ -214,9 +216,10 @@ public class ViewActivity extends AppCompatActivity {
             }
             item[i] = new Item(nick_arr.get(i).toString(), img_bitmap, write_arr.get(i).toString());
             Good_Count gc = new Good_Count(String.valueOf(i));
-            ArrayList gc_arr = gc.getgood_count();
-            if(gc_arr.size() != 0) {
-                item[i].good_count(gc_arr.get(i).toString());
+            String good_count = gc.getgood_count();
+
+            if(!good_count.equals(null)) {
+                item[i].good_count(good_count);
             }
             items.add(item[i]);
         }

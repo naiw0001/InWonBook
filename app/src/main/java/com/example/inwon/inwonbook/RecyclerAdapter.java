@@ -50,8 +50,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.imageView.setVisibility(View.VISIBLE);
         }
         holder.text_write.setText(item.getWrite());
-        int size = new Good_Count(String.valueOf(position)).getgood_count().size();
-        if(size == 0){
+        if(new Good_Count(String.valueOf(position)).getgood_count().equals(null)){
             holder.good.setText("좋아요: 0개");
         }else {
             holder.good.setText("좋아요: " + item.getGc() + "개");
@@ -67,8 +66,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Good_Count good_count = new Good_Count(String.valueOf(position));
-                int size = good_count.getgood_count().size();
-                if(size == 0){
+                if(good_count.getgood_count().equals(null)){
                     good_count.insert_goot_count();
                 }else {
                     good_count.update_good_count();

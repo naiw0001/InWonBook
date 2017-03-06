@@ -28,6 +28,7 @@ public class Bring_Comment extends AsyncTask<String,Void,ArrayList>{
         URL url;
         try {
             url = new URL(link+"?idx="+pos);
+            Log.i("urlurl", String.valueOf(url));
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setDoOutput(true);
             conn.setDoInput(true);
