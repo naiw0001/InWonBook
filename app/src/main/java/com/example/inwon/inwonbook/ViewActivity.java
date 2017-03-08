@@ -6,10 +6,14 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -44,6 +48,7 @@ public class ViewActivity extends AppCompatActivity {
     private static ListView list;
     private static ListViewAdapter adapter;
     private static int isslide = 0; // 댓글창 유무
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class ViewActivity extends AppCompatActivity {
 
         comment = (EditText)findViewById(R.id.comment_edit);
         send_comment = (Button)findViewById(R.id.comment_btn);
+        drawer = (DrawerLayout)findViewById(R.id.drawer);
         setitem();
     }
 
@@ -172,6 +178,25 @@ public class ViewActivity extends AppCompatActivity {
             return bitmap;
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.friend:
+            drawer.openDrawer(Gravity.RIGHT);
+                if(drawer.isDrawerOpen(Gravity.RIGHT)){
+                    drawer.closeDrawer(Gravity.RIGHT);
+                }
+            break;
+        }
+        return false;
     }
 
     private void setitem() {
