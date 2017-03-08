@@ -71,10 +71,7 @@ public class Good_Count{
                     }
                     br.close();
                 }catch (Exception c){}
-
-                String result=null;
-                result = getjson(json.toString());
-
+                String result = getjson(json.toString());
                 return result;
             }
 

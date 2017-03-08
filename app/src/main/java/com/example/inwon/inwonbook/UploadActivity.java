@@ -84,7 +84,6 @@ public class UploadActivity extends Activity{
                         });
 
                         uploadFile(uploadFilePath);
-
                     }
                 }).start();
 
@@ -92,8 +91,6 @@ public class UploadActivity extends Activity{
             String nick = CheckLogin.nick;
             Insertdbtext insertdbtext = new Insertdbtext();
             insertdbtext.execute("http://1.224.44.55/inwonbook_insert.php", nick, write, uploadFileName);
-
-           finish();
     }
     @SuppressLint("LongLogTag")
     public int uploadFile(String sourceFileUri) {

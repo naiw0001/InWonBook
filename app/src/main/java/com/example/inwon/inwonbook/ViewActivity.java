@@ -268,9 +268,10 @@ public class ViewActivity extends AppCompatActivity {
             Good_Count gc = new Good_Count(String.valueOf(i));
             String good_count = gc.getgood_count();
 
-            if(!good_count.equals(null)) {
+//            if(!good_count.equals(null)) {
                 item[i].good_count(good_count);
-            }
+//            }
+
             items.add(item[i]);
         }
 

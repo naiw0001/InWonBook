@@ -50,11 +50,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.imageView.setVisibility(View.VISIBLE);
         }
         holder.text_write.setText(item.getWrite());
-        if(new Good_Count(String.valueOf(position)).getgood_count().equals(null)){
-            holder.good.setText("좋아요: 0개");
-        }else {
+//        if(new Good_Count(String.valueOf(position)).getgood_count().equals(null)){
+//            holder.good.setText("좋아요: 0개");
+//        }else {
             holder.good.setText("좋아요: " + item.getGc() + "개");
-        }
+//        }
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
