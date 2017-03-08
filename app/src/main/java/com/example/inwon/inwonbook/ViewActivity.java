@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,12 +18,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.inwon.inwonbook.Friend_Relationship.Member_DB;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -48,7 +53,11 @@ public class ViewActivity extends AppCompatActivity {
     private static ListView list;
     private static ListViewAdapter adapter;
     private static int isslide = 0; // 댓글창 유무
-    DrawerLayout drawer;
+    private DrawerLayout drawer;
+    private ListView member_list;
+    private ArrayAdapter member_adapter;
+    private ArrayList member;
+    private AlertDialog.Builder dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,12 +77,28 @@ public class ViewActivity extends AppCompatActivity {
         list = (ListView)findViewById(R.id.list);
         adapter = new ListViewAdapter();
         list.setAdapter(adapter);
-
+        dialog = new AlertDialog.Builder(this);
         comment = (EditText)findViewById(R.id.comment_edit);
         send_comment = (Button)findViewById(R.id.comment_btn);
         drawer = (DrawerLayout)findViewById(R.id.drawer);
+        Member_DB md = new Member_DB();
+        member = md.bring_member();
+        member_adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, member);
+        member_list = (ListView)findViewById(R.id.drawer_container);
+        member_list.setAdapter(member_adapter);
+        member_list.setOnItemClickListener(list_cilck);
         setitem();
     }
+    AdapterView.OnItemClickListener list_cilck = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            String nickname = member_adapter.getItem(position).toString();
+            dialog.setTitle(nickname+"님을 추가하시겠습니까?");
+            dialog.setPositiveButton("예",null);
+            dialog.setNegativeButton("아니오",null);
+            dialog.show();
+        }
+    };
 
     View.OnClickListener writeclick = new View.OnClickListener() {
         @Override

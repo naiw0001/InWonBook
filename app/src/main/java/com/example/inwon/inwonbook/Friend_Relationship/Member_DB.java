@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by inwon on 2017-03-08.
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 
 public class Member_DB{
 
-    public void bring_member(){
+    public ArrayList bring_member(){
+        ArrayList member = new ArrayList();
     class Bring extends AsyncTask<String,Void,ArrayList>{
-
         @Override
         protected ArrayList doInBackground(String... params) {
             String link = params[0];
@@ -40,7 +41,14 @@ public class Member_DB{
             return nick;
         }
       }
-      new Bring().execute("http://1.224.44.55/inwonbook_member_select.php");
+        try {
+            member = new Bring().execute("http://1.224.44.55/inwonbook_member_select.php").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return member;
     }
     private ArrayList getJson(String json){
         ArrayList<String> nick_arr = new ArrayList<>();
