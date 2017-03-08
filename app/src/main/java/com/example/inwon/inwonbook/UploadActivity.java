@@ -36,33 +36,12 @@ public class UploadActivity extends Activity{
     String uploadFilePath;
     String uploadFileName;
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode){
-            case 1:{
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                }else {
-                }
-                return;
-            }
-        }
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        //check permission
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-
-        }if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-
-        }else {
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-        }
         Intent intent = getIntent();
         uploadFilePath = intent.getStringExtra("path");
         uploadFileName = intent.getStringExtra("name");
@@ -75,14 +54,29 @@ public class UploadActivity extends Activity{
         /************* Php script path ****************/
         upLoadServerUri = "http://1.224.44.55/test.php";
 
-        uploadButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        uploadButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                dialog = ProgressDialog.show(UploadActivity.this, "", "Uploading file...", true);
+//
+//                new Thread(new Runnable() {
+//                    public void run() {
+//                        runOnUiThread(new Runnable() {
+//                            public void run() {
+//                                messageText.setText("uploading started.....");
+//                            }
+//                        });
+//
+//                        uploadFile(uploadFilePath);
+//
+//                    }
+//                }).start();
+//            }
+//        });
 
-                dialog = ProgressDialog.show(UploadActivity.this, "", "Uploading file...", true);
-
-                new Thread(new Runnable() {
-                    public void run() {
+        new Thread(new Runnable() {
+                                public void run() {
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 messageText.setText("uploading started.....");
@@ -93,13 +87,13 @@ public class UploadActivity extends Activity{
 
                     }
                 }).start();
-            }
-        });
 
             String write = intent.getStringExtra("text");
             String nick = CheckLogin.nick;
             Insertdbtext insertdbtext = new Insertdbtext();
             insertdbtext.execute("http://1.224.44.55/inwonbook_insert.php", nick, write, uploadFileName);
+
+           finish();
     }
     @SuppressLint("LongLogTag")
     public int uploadFile(String sourceFileUri) {
