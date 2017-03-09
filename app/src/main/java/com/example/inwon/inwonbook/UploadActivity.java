@@ -23,7 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UploadActivity extends Activity{
+public class UploadActivity extends Activity {
 
     TextView messageText;
     Button uploadButton;
@@ -47,6 +47,11 @@ public class UploadActivity extends Activity{
         uploadFileName = intent.getStringExtra("name");
         uploadButton = (Button) findViewById(R.id.uploadButton);
         messageText = (TextView) findViewById(R.id.messageText);
+
+        String write = intent.getStringExtra("text");
+        String nick = CheckLogin.nick;
+        Insertdbtext insertdbtext = new Insertdbtext();
+        insertdbtext.execute("http://1.224.44.55/inwonbook_insert.php", nick, write, uploadFileName);
 
         messageText.setText("Uploading file path :- '" + uploadFilePath + "|" + uploadFileName + "'");
 
@@ -73,11 +78,8 @@ public class UploadActivity extends Activity{
                 }).start();
             }
         });
-            String write = intent.getStringExtra("text");
-            String nick = CheckLogin.nick;
-            Insertdbtext insertdbtext = new Insertdbtext();
-            insertdbtext.execute("http://1.224.44.55/inwonbook_insert.php", nick, write, uploadFileName);
     }
+
     @SuppressLint("LongLogTag")
     public int uploadFile(String sourceFileUri) {
         String fileName = sourceFileUri;
@@ -95,13 +97,11 @@ public class UploadActivity extends Activity{
             runOnUiThread(new Runnable() {
                 public void run() {
                     messageText.setText("Source File not exist :"
-                            +uploadFilePath + "" + uploadFileName);
+                            + uploadFilePath + "" + uploadFileName);
                 }
             });
             return 0;
-        }
-        else
-        {
+        } else {
             try {
 
                 // open a URL connection to the Servlet
@@ -156,13 +156,13 @@ public class UploadActivity extends Activity{
                 Log.i("uploadFile", "HTTP Response is : "
                         + serverResponseMessage + ": " + serverResponseCode);
 
-                if(serverResponseCode == 200){
+                if (serverResponseCode == 200) {
 
                     runOnUiThread(new Runnable() {
                         public void run() {
 
                             String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
-                                    +uploadFileName;
+                                    + uploadFileName;
 
                             messageText.setText(msg);
                             Toast.makeText(UploadActivity.this, "File Upload Complete.",
