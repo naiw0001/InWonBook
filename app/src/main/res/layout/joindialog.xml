@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/join_id"
             android:hint="id"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:singleLine="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -35,6 +36,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/join_pw"
             android:hint="pw"
+            android:singleLine="true"
             android:layout_weight="1"/>
     </LinearLayout>
 
@@ -51,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/join_name"
+            android:singleLine="true"
             android:hint="name"
             android:layout_weight="1"/>
     </LinearLayout>
@@ -69,6 +72,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/join_nick"
             android:hint="nick"
+            android:singleLine="true"
             android:layout_weight="1"/>
     </LinearLayout>
 

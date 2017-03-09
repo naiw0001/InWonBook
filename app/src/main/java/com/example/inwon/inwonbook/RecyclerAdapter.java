@@ -50,11 +50,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.imageView.setVisibility(View.VISIBLE);
         }
         holder.text_write.setText(item.getWrite());
-//        if(new Good_Count(String.valueOf(position)).getgood_count().equals(null)){
-//            holder.good.setText("좋아요: 0개");
-//        }else {
-            holder.good.setText("좋아요: " + item.getGc() + "개");
-//        }
+
+        holder.good.setText("좋아요: " + item.getGc() + "개");
+
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,11 +60,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 ViewActivity.slidlayout(position,1);
             }
         });
+
         holder.good.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Good_Count good_count = new Good_Count(String.valueOf(position));
-                if(good_count.getgood_count().equals(null)){
+                if(good_count.getgood_count().equals("0")){
                     good_count.insert_goot_count();
                 }else {
                     good_count.update_good_count();

@@ -45,7 +45,6 @@ public class UploadActivity extends Activity{
         Intent intent = getIntent();
         uploadFilePath = intent.getStringExtra("path");
         uploadFileName = intent.getStringExtra("name");
-        Log.i("ccccccc",uploadFilePath);
         uploadButton = (Button) findViewById(R.id.uploadButton);
         messageText = (TextView) findViewById(R.id.messageText);
 
@@ -54,29 +53,14 @@ public class UploadActivity extends Activity{
         /************* Php script path ****************/
         upLoadServerUri = "http://1.224.44.55/test.php";
 
-//        uploadButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                dialog = ProgressDialog.show(UploadActivity.this, "", "Uploading file...", true);
-//
-//                new Thread(new Runnable() {
-//                    public void run() {
-//                        runOnUiThread(new Runnable() {
-//                            public void run() {
-//                                messageText.setText("uploading started.....");
-//                            }
-//                        });
-//
-//                        uploadFile(uploadFilePath);
-//
-//                    }
-//                }).start();
-//            }
-//        });
+        uploadButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        new Thread(new Runnable() {
-                                public void run() {
+                dialog = ProgressDialog.show(UploadActivity.this, "", "Uploading file...", true);
+
+                new Thread(new Runnable() {
+                    public void run() {
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 messageText.setText("uploading started.....");
@@ -84,9 +68,11 @@ public class UploadActivity extends Activity{
                         });
 
                         uploadFile(uploadFilePath);
+
                     }
                 }).start();
-
+            }
+        });
             String write = intent.getStringExtra("text");
             String nick = CheckLogin.nick;
             Insertdbtext insertdbtext = new Insertdbtext();

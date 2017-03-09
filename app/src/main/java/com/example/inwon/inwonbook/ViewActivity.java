@@ -1,5 +1,6 @@
 package com.example.inwon.inwonbook;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,7 +44,7 @@ import java.util.concurrent.ExecutionException;
 public class ViewActivity extends AppCompatActivity {
     private TextView write;
     private Bitmap img_bitmap;
-    private ArrayList<String> textarray;
+    private ArrayList<String> textarray, fm_arr,io_arr,tm_arr;
     private static ArrayList<String> nick_arr, write_arr, img_arr,idx_arr;
     static private RelativeLayout comment_layout;
     static Animation anim_up,anim_down;
@@ -58,6 +59,7 @@ public class ViewActivity extends AppCompatActivity {
     private ArrayAdapter member_adapter;
     private ArrayList member;
     private AlertDialog.Builder dialog;
+    private ArrayList friendapply;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +85,13 @@ public class ViewActivity extends AppCompatActivity {
         drawer = (DrawerLayout)findViewById(R.id.drawer);
         Member_DB md = new Member_DB();
         member = md.bring_member();
+        friendapply = md.getapply(CheckLogin.nick);
+        fm_arr = new ArrayList<>();
+        io_arr = new ArrayList<>();
+        tm_arr = new ArrayList<>();
+
+        friendapply_m();
+
         member_adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, member);
         member_list = (ListView)findViewById(R.id.drawer_container);
         member_list.setAdapter(member_adapter);
@@ -92,9 +101,16 @@ public class ViewActivity extends AppCompatActivity {
     AdapterView.OnItemClickListener list_cilck = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String nickname = member_adapter.getItem(position).toString();
+            final String nickname = member_adapter.getItem(position).toString();
             dialog.setTitle(nickname+"님을 추가하시겠습니까?");
-            dialog.setPositiveButton("예",null);
+            dialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Member_DB md = new Member_DB();
+                    md.friendapply(CheckLogin.nick,"요청",nickname);
+                    Toast.makeText(ViewActivity.this, "친구 요청을 보냈습니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
             dialog.setNegativeButton("아니오",null);
             dialog.show();
         }
@@ -106,6 +122,32 @@ public class ViewActivity extends AppCompatActivity {
             startActivity(new Intent(ViewActivity.this, WriteActivity.class));
         }
     };
+
+    public void friendapply_m(){
+
+        for(int i=0; i<friendapply.size();){
+            fm_arr.add(friendapply.get(i).toString());
+            io_arr.add(friendapply.get(i+1).toString());
+            tm_arr.add(friendapply.get(i+2).toString());
+            i += 3;
+        }
+        //친구 요청후 수락/거절
+        for(int i=0; i< tm_arr.size();i++){
+
+            if(CheckLogin.nick.equals(tm_arr.get(i).toString())){
+                if(io_arr.get(i).toString().equals("요청")){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setTitle("추가하시겠습니까?");
+                    dialog.setNegativeButton("거절",null);
+                    dialog.setPositiveButton("수락",null);
+                    dialog.show();
+                }
+            }
+
+        }
+
+    }
+
         // onClick
     public void btn_send_comment(View v){
         String temp = comment.getText().toString(); // comment
@@ -268,9 +310,7 @@ public class ViewActivity extends AppCompatActivity {
             Good_Count gc = new Good_Count(String.valueOf(i));
             String good_count = gc.getgood_count();
 
-//            if(!good_count.equals(null)) {
                 item[i].good_count(good_count);
-//            }
 
             items.add(item[i]);
         }
@@ -280,3 +320,4 @@ public class ViewActivity extends AppCompatActivity {
     }
 
 }
+

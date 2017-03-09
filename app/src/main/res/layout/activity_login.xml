@@ -30,7 +30,8 @@
                 android:id="@+id/edit_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="id" />
+                android:hint="id"
+                android:singleLine="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -43,7 +44,9 @@
                 android:id="@+id/edit_pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="password" />
+                android:hint="password"
+                android:singleLine="true"
+                android:inputType="textPassword"/>
         </LinearLayout>
 
         <LinearLayout

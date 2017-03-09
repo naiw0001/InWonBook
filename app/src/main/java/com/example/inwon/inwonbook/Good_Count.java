@@ -66,7 +66,7 @@ public class Good_Count{
                     BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     while(true){
                         String line = br.readLine();
-                        if(line == null)break;
+                        if(line == null && idx != null)break;
                         json.append(line+"\n");
                     }
                     br.close();
@@ -77,6 +77,10 @@ public class Good_Count{
 
             private String getjson(String json){
                 String gc=null;
+                Log.i("zxczxc", String.valueOf(json.length()));
+                if(json.length()==3){
+                    gc = "0";
+                }
                 try {
                     JSONArray ja = new JSONArray(json);
                     for(int i=0;i<ja.length();i++){
