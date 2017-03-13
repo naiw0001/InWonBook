@@ -6,13 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,19 +47,21 @@ public class ViewActivity extends AppCompatActivity {
     private ArrayList<String> textarray, fm_arr,io_arr,tm_arr;
     private static ArrayList<String> nick_arr, write_arr, img_arr,idx_arr;
     static private RelativeLayout comment_layout;
-    static Animation anim_up,anim_down;
+    static Animation anim_up,anim_down,anim_right,anim_left;
     private EditText comment;
     private Button send_comment;
     static int val;
     private static ListView list;
     private static ListViewAdapter adapter;
     private static int isslide = 0; // 댓글창 유무
+    private int isfriend_layout=0;
     private DrawerLayout drawer;
-    private ListView member_list;
-    private ArrayAdapter member_adapter;
+    private ListView member_list,friend_list;
+    private ArrayAdapter member_adapter,friend_adapter;
     private ArrayList member;
     private AlertDialog.Builder dialog;
     private ArrayList friendapply;
+    private RelativeLayout friend_layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,8 +77,14 @@ public class ViewActivity extends AppCompatActivity {
         img_arr = new ArrayList<>();
         anim_up = AnimationUtils.loadAnimation(ViewActivity.this ,R.anim.slid_up);
         anim_down= AnimationUtils.loadAnimation(ViewActivity.this ,R.anim.slid_down);
+        anim_right = AnimationUtils.loadAnimation(ViewActivity.this,R.anim.slid_right);
+        anim_left = AnimationUtils.loadAnimation(ViewActivity.this,R.anim.slid_left);
 
+        friend_layout = (RelativeLayout)findViewById(R.id.friend_list_layout);
         list = (ListView)findViewById(R.id.list);
+        friend_list = (ListView)findViewById(R.id.friend_list);
+        friend_adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1);
+
         adapter = new ListViewAdapter();
         list.setAdapter(adapter);
         dialog = new AlertDialog.Builder(this);
@@ -93,7 +101,8 @@ public class ViewActivity extends AppCompatActivity {
         friendapply_m();
 
         member_adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, member);
-        member_list = (ListView)findViewById(R.id.drawer_container);
+        member_adapter.add("친구 목록");
+        member_list = (ListView)findViewById(R.id.drawer_list);
         member_list.setAdapter(member_adapter);
         member_list.setOnItemClickListener(list_cilck);
         setitem();
@@ -102,17 +111,30 @@ public class ViewActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             final String nickname = member_adapter.getItem(position).toString();
-            dialog.setTitle(nickname+"님을 추가하시겠습니까?");
-            dialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Member_DB md = new Member_DB();
-                    md.friendapply(CheckLogin.nick,"요청",nickname);
-                    Toast.makeText(ViewActivity.this, "친구 요청을 보냈습니다.", Toast.LENGTH_SHORT).show();
-                }
-            });
-            dialog.setNegativeButton("아니오",null);
-            dialog.show();
+            if(nickname.equals("친구 목록")){
+                drawer.closeDrawer(Gravity.RIGHT);
+                friend_layout.startAnimation(anim_right);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        friend_layout.setVisibility(View.VISIBLE);
+                    }
+                },200);
+                isfriend_layout=1;
+            }else {
+                dialog.setTitle(nickname + "님을 추가하시겠습니까?");
+                dialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Member_DB md = new Member_DB();
+                        md.friendapply(CheckLogin.nick, "요청", nickname);
+                        Toast.makeText(ViewActivity.this, "친구 요청을 보냈습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dialog.setNegativeButton("아니오", null);
+                dialog.show();
+            }
         }
     };
 
@@ -131,6 +153,7 @@ public class ViewActivity extends AppCompatActivity {
             tm_arr.add(friendapply.get(i+2).toString());
             i += 3;
         }
+
         //친구 요청후 수락/거절
         for(int i=0; i< tm_arr.size();i++){
 
@@ -138,8 +161,15 @@ public class ViewActivity extends AppCompatActivity {
                 if(io_arr.get(i).toString().equals("요청")){
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setTitle("추가하시겠습니까?");
+                    dialog.setPositiveButton("수락", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Member_DB db = new Member_DB();
+                            db.friend_ok();
+                            Toast.makeText(ViewActivity.this, "수락되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     dialog.setNegativeButton("거절",null);
-                    dialog.setPositiveButton("수락",null);
                     dialog.show();
                 }
             }
@@ -215,6 +245,15 @@ public class ViewActivity extends AppCompatActivity {
             if(isslide == 1){
                 slidlayout_down();
                 backKeyPressedTime = 0;
+            }else if(isfriend_layout == 1){
+                friend_layout.startAnimation(anim_left);
+                android.os.Handler handler = new android.os.Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                friend_layout.setVisibility(View.GONE);
+                    }
+                },200);
             }else Toast.makeText(getApplicationContext(), "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
             return;
         }

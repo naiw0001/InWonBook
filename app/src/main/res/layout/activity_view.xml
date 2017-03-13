@@ -66,13 +66,29 @@
             </LinearLayout>
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/friend_list_layout"
+            android:background="#ffffff">
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/friend_list">
+            </ListView>
+        </RelativeLayout>
+
+
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/drawer_container"
-        android:layout_width="100dp"
+        android:id="@+id/drawer_list"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:background="#abcdef"/>
+
 </android.support.v4.widget.DrawerLayout>
 
