@@ -175,5 +175,17 @@ public class Member_DB{
         }
     }
 
+    public void putfriend(){
+       class Friend extends AsyncTask<Void,Void,Void>{
+
+           @Override
+           protected Void doInBackground(Void... params) {
+
+               return null;
+
+           }
+       }
+    }
+
 
 }

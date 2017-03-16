@@ -4,6 +4,11 @@
     <item android:id="@+id/friend"
         android:title="친구"
         android:icon="@drawable/friend"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        android:orderInCategory="2"/>
+    <item android:id="@+id/logout"
+        android:title="로그아웃"
+        app:showAsAction="always|withText"
+        android:orderInCategory="1"/>
 
 </menu>

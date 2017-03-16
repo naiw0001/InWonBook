@@ -76,11 +76,21 @@
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/friend_list">
+                android:id="@+id/friend_list" >
             </ListView>
         </RelativeLayout>
-
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/friend_apply_layout"
+        android:background="#FFFFFF"
+        android:visibility="gone">
+        <ListView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/friend_apply_list">
+            </ListView>
+</RelativeLayout>
     </RelativeLayout>
 
     <ListView
