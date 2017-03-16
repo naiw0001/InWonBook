@@ -56,7 +56,7 @@ public class ViewActivity extends AppCompatActivity {
     private static ListView list;
     private static ListViewAdapter adapter;
     private static int isslide = 0; // 댓글창 유무
-    private int isfriend_layout = 0, isfriend_apply=0;
+    private int isfriend_layout = 0, isfriend_apply = 0;
     private DrawerLayout drawer;
     private ListView member_list, friend_list, friend_apply_list;
     private ArrayAdapter member_adapter, friend_adapter, friend_apply_adapter;
@@ -87,9 +87,9 @@ public class ViewActivity extends AppCompatActivity {
         friend_list = (ListView) findViewById(R.id.friend_list);
         friend_adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
         friend_list.setAdapter(friend_adapter);
-        friend_apply_list = (ListView)findViewById(R.id.friend_apply_list);
-        friend_apply_layout = (RelativeLayout)findViewById(R.id.friend_apply_layout);
-        friend_apply_adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1);
+        friend_apply_list = (ListView) findViewById(R.id.friend_apply_list);
+        friend_apply_layout = (RelativeLayout) findViewById(R.id.friend_apply_layout);
+        friend_apply_adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
         friend_apply_list.setAdapter(friend_apply_adapter);
 
         adapter = new ListViewAdapter();
@@ -106,7 +106,7 @@ public class ViewActivity extends AppCompatActivity {
         tm_arr = new ArrayList<>();
 
         friendapply_m();
-
+        friend_apply();
         member_adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, member);
         member_adapter.add("친구 목록");
         member_adapter.add("친구 요청");
@@ -114,7 +114,6 @@ public class ViewActivity extends AppCompatActivity {
         member_list.setAdapter(member_adapter);
         member_list.setOnItemClickListener(list_cilck);
         setitem();
-        my_friend();
     }
 
     AdapterView.OnItemClickListener list_cilck = new AdapterView.OnItemClickListener() {
@@ -137,6 +136,7 @@ public class ViewActivity extends AppCompatActivity {
                 drawer.closeDrawer(Gravity.RIGHT);
                 friend_apply_layout.setVisibility(View.VISIBLE);
                 friendapply_m();
+                friend_apply();
                 isfriend_apply = 1;
             } else {
                 dialog.setTitle(nickname + "님을 추가하시겠습니까?");
@@ -155,60 +155,69 @@ public class ViewActivity extends AppCompatActivity {
         }
 
     };
-        View.OnClickListener writeclick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ViewActivity.this, WriteActivity.class));
-            }
-        };
+    View.OnClickListener writeclick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(ViewActivity.this, WriteActivity.class));
+        }
+    };
 
-        public void my_friend() {
-            for (int i = 0; i < fm_arr.size(); i++) {
-                if (fm_arr.get(i).toString().equals(CheckLogin.nick)) {
-                    if (io_arr.get(i).toString().equals("수락")) {
-                        friend_adapter.add(tm_arr.get(i).toString());
-                    }
-                } else if (tm_arr.get(i).toString().equals(CheckLogin.nick)) {
-                    if (io_arr.get(i).toString().equals("수락")) {
-                        friend_adapter.add(fm_arr.get(i).toString());
-                    }
+    public void my_friend() {
+        friendapply_m();
+        friend_adapter.clear();
+        for (int i = 0; i < fm_arr.size(); i++) {
+            if (fm_arr.get(i).toString().equals(CheckLogin.nick)) {
+                if (io_arr.get(i).toString().equals("수락")) {
+                    friend_adapter.add(tm_arr.get(i).toString());
+                }
+            } else if (tm_arr.get(i).toString().equals(CheckLogin.nick)) {
+                if (io_arr.get(i).toString().equals("수락")) {
+                    friend_adapter.add(fm_arr.get(i).toString());
                 }
             }
-            friend_adapter.notifyDataSetChanged();
         }
+        friend_adapter.notifyDataSetChanged();
+    }
 
-        public void friendapply_m() {
+    public void friendapply_m() {
+        fm_arr.clear();
+        io_arr.clear();
+        tm_arr.clear();
+        for (int i = 0; i < friendapply.size(); ) {
+            fm_arr.add(friendapply.get(i).toString());
+            io_arr.add(friendapply.get(i + 1).toString());
+            tm_arr.add(friendapply.get(i + 2).toString());
+            i += 3;
+        }
+    }
 
-            for (int i = 0; i < friendapply.size(); ) {
-                fm_arr.add(friendapply.get(i).toString());
-                io_arr.add(friendapply.get(i + 1).toString());
-                tm_arr.add(friendapply.get(i + 2).toString());
-                i += 3;
-            }
+    public void friend_apply() {
+        //친구 요청후 수락/거절
+        for (int i = 0; i < tm_arr.size(); i++) {
 
-            //친구 요청후 수락/거절
-            for (int i = 0; i < tm_arr.size(); i++) {
-
-                if (CheckLogin.nick.equals(tm_arr.get(i).toString())) {
-                    if (io_arr.get(i).toString().equals("요청")) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                        dialog.setTitle("추가하시겠습니까?");
-                        dialog.setPositiveButton("수락", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Member_DB db = new Member_DB();
-                                db.friend_ok();
-                                Toast.makeText(ViewActivity.this, "수락되었습니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        dialog.setNegativeButton("거절", null);
-                        dialog.show();
-                    }
+            if (CheckLogin.nick.equals(tm_arr.get(i).toString())) {
+                if (io_arr.get(i).toString().equals("요청")) {
+                    final String fm = fm_arr.get(i).toString();
+                    final String tm = tm_arr.get(i).toString();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setTitle(fm + "님을 추가하시겠습니까?");
+                    dialog.setPositiveButton("수락", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Member_DB db = new Member_DB();
+                            db.friend_ok(fm, tm);
+                            Toast.makeText(ViewActivity.this, "수락되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    dialog.setNegativeButton("거절", null);
+                    dialog.show();
                 }
-
             }
 
         }
+
+    }
+
 
         // onClick
         public void btn_send_comment(View v) {

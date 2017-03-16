@@ -2,6 +2,7 @@ package com.example.inwon.inwonbook.Friend_Relationship;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -158,14 +159,19 @@ public class Member_DB{
         return apply;
     }
 
-    public void friend_ok(){
+    public void friend_ok(String fm, String tm){
         class Ok extends AsyncTask<String,Void,String>{
             @Override
             protected String doInBackground(String... params) {
                 String link = params[0];
+                String fm = params[1];
+                String tm = params[2];
                 String uri = link+"?ok=1";
                 try{
-                    URL url = new URL(uri);
+                    String fmm = URLEncoder.encode(fm,"UTF-8");
+                    String tmm = URLEncoder.encode(tm,"utf-8");
+                    URL url = new URL(uri+"&fm="+fmm+"&tm="+tmm);
+                    Log.e("zxczxc", String.valueOf(url));
                     HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                     conn.setDoInput(true);
                     conn.setDoOutput(true);
@@ -173,6 +179,7 @@ public class Member_DB{
                 return null;
             }
         }
+        new Ok().execute("http://1.224.44.55/inwonbook_friend_ok.php",fm,tm);
     }
 
     public void putfriend(){
