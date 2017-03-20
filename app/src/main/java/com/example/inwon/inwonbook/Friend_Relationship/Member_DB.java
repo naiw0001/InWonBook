@@ -171,7 +171,6 @@ public class Member_DB{
                     String fmm = URLEncoder.encode(fm,"UTF-8");
                     String tmm = URLEncoder.encode(tm,"utf-8");
                     URL url = new URL(uri+"&fm="+fmm+"&tm="+tmm);
-                    Log.e("zxczxc", String.valueOf(url));
                     HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                     conn.setDoInput(true);
                     conn.setDoOutput(true);
@@ -181,18 +180,5 @@ public class Member_DB{
         }
         new Ok().execute("http://1.224.44.55/inwonbook_friend_ok.php",fm,tm);
     }
-
-    public void putfriend(){
-       class Friend extends AsyncTask<Void,Void,Void>{
-
-           @Override
-           protected Void doInBackground(Void... params) {
-
-               return null;
-
-           }
-       }
-    }
-
 
 }
